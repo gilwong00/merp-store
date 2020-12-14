@@ -1,0 +1,47 @@
+{
+	"name": "merp-shop",
+	"version": "1.0.0",
+	"main": "server.ts",
+	"author": "Gilbert",
+	"license": "MIT",
+	"scripts": {
+		"gen-env": "gen-env-types .env -o ./env.d.ts -e .",
+		"dev": "concurrently --kill-others-on-fail \"yarn server:dev\" \"yarn client\"",
+		"start": "node server.js",
+		"server": "ts-node server.ts",
+		"server:dev": "ts-node-dev server.ts --watch",
+		"client": "npm run start --prefix client",
+		"typeorm": "ts-node ./node_modules/typeorm/cli.js",
+		"migration:new": "yarn typeorm migration:generate --name"
+	},
+	"dependencies": {
+		"@types/express-session": "^1.17.3",
+		"apollo-server-express": "^2.19.0",
+		"bcryptjs": "^2.4.3",
+		"class-validator": "^0.12.2",
+		"colors": "^1.4.0",
+		"connect-redis": "^5.0.0",
+		"cors": "^2.8.5",
+		"dotenv-safe": "^8.2.0",
+		"express": "^4.17.1",
+		"express-session": "^1.17.1",
+		"graphql": "^15.4.0",
+		"graphql-tools": "^7.0.2",
+		"ioredis": "^4.19.4",
+		"jsonwebtoken": "^8.5.1",
+		"pg": "^8.5.1",
+		"type-graphql": "^1.1.1",
+		"typeorm": "^0.2.29"
+	},
+	"devDependencies": {
+		"@types/bcryptjs": "^2.4.2",
+		"@types/connect-redis": "^0.0.16",
+		"@types/express": "^4.17.9",
+		"@types/graphql": "^14.5.0",
+		"@types/node": "^14.14.13",
+		"gen-env-types": "^1.0.4",
+		"ts-node": "^9.1.1",
+		"ts-node-dev": "^1.1.1",
+		"typescript": "^4.1.3"
+	}
+}
