@@ -1,4 +1,4 @@
-import { OrderHeader } from 'entities';
+import { OrderHeader, Product } from 'entities';
 import { ObjectType, Field } from 'type-graphql';
 import {
   Entity,
@@ -7,6 +7,7 @@ import {
   BaseEntity,
   ManyToOne,
   JoinColumn
+  // OneToOne
 } from 'typeorm';
 
 @ObjectType()
@@ -32,6 +33,11 @@ class OrderDetail extends BaseEntity {
   // @JoinColumn({ name: 'order_header_id' })
   @JoinColumn({ name: 'id', referencedColumnName: 'id' })
   order: OrderHeader;
+
+  // this might actually be a one to one relationship
+  @ManyToOne(() => Product)
+  // @JoinColumn({ name: 'id', referencedColumnName: 'id' })
+  product: Product;
 }
 
 export default OrderDetail;

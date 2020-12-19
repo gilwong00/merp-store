@@ -10,7 +10,7 @@ import { ApolloServer } from 'apollo-server-express';
 import { createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
 import { UserResolver } from './server/graphql';
-import { User } from './server/entities';
+import { User, Product, OrderDetail, OrderHeader } from './server/entities';
 
 const initServer = async (): Promise<void> => {
   const PORT = process.env.PORT || 5000;
@@ -19,7 +19,7 @@ const initServer = async (): Promise<void> => {
   const redis = new Redis(process.env.REDIS_URL);
 
   await createConnection({
-    type: process.env.DATABASE_TYPE,
+    type: 'postgres',
     host: process.env.DATABASE_URL,
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
@@ -27,7 +27,7 @@ const initServer = async (): Promise<void> => {
     logging: true,
     synchronize: process.env.NODE_ENV !== 'production',
     migrations: [path.join(__dirname, './server/migrations/*')],
-    entities: [User]
+    entities: [User, Product, OrderDetail, OrderHeader]
   });
 
   app.set('trust proxy', 1);
