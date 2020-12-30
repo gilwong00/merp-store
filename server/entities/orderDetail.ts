@@ -1,4 +1,4 @@
-import { OrderHeader, Product } from 'entities';
+import { OrderHeader, Product } from '.';
 import { ObjectType, Field } from 'type-graphql';
 import {
   Entity,

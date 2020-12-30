@@ -1,4 +1,4 @@
-import { OrderDetail } from 'entities';
+import { OrderDetail } from '.';
 import { ObjectType, Field } from 'type-graphql';
 import {
   Entity,
