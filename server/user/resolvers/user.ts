@@ -1,4 +1,4 @@
-import { User } from '../entities';
+import User from '../entity/user';
 import {
   Arg,
   Ctx,
@@ -8,7 +8,7 @@ import {
   InputType,
   Field
 } from 'type-graphql';
-import { Context } from '../types';
+import { Context } from '../../types';
 import { compareSync } from 'bcryptjs';
 
 @InputType()

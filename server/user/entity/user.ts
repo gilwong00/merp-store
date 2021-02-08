@@ -2,7 +2,6 @@ import { ObjectType, Field } from 'type-graphql';
 import {
   Entity,
   Column,
-  // OneToMany,
   BeforeInsert,
   Index,
   PrimaryGeneratedColumn,
