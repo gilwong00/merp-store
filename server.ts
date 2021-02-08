@@ -1,6 +1,8 @@
+// convert this file to a gateway api
 import 'dotenv-safe/config';
 import express from 'express';
 import session from 'express-session';
+import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import colors from 'colors';
 import path from 'path';
@@ -31,6 +33,12 @@ const initServer = async (): Promise<void> => {
   });
 
   app.set('trust proxy', 1);
+  app.use(
+    rateLimit({
+      windowMs: 1 * 60 * 1000,
+      max: 100
+    })
+  );
   app.use(
     cors({
       credentials: true,

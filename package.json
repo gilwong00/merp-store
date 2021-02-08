@@ -7,6 +7,8 @@
 	"scripts": {
 		"gen-env": "gen-env-types .env -o ./env.d.ts -e .",
 		"dev": "concurrently --kill-others-on-fail \"yarn server:dev\" \"yarn client\"",
+		"services": "concurrently --kill-others-on-fail \"yarn api\" \"yarn client\"",
+		"api": "concurrently -k yarn server:*",
 		"start": "node server.js",
 		"server": "ts-node server.ts",
 		"server:dev": "ts-node-dev server.ts --watch",
@@ -15,8 +17,10 @@
 		"migration:new": "yarn typeorm migration:generate --name"
 	},
 	"dependencies": {
+		"@apollo/federation": "^0.21.0",
+		"@apollo/gateway": "^0.22.0",
 		"@types/express-session": "^1.17.3",
-		"apollo-server-express": "^2.19.0",
+		"apollo-server-express": "^2.19.2",
 		"bcryptjs": "^2.4.3",
 		"class-validator": "^0.12.2",
 		"colors": "^1.4.0",
@@ -24,8 +28,9 @@
 		"cors": "^2.8.5",
 		"dotenv-safe": "^8.2.0",
 		"express": "^4.17.1",
+		"express-rate-limit": "^5.2.3",
 		"express-session": "^1.17.1",
-		"graphql": "^15.4.0",
+		"graphql": "^15.5.0",
 		"graphql-tools": "^7.0.2",
 		"ioredis": "^4.19.4",
 		"jsonwebtoken": "^8.5.1",
