@@ -1,43 +1,39 @@
 import 'dotenv-safe/config';
 import express from 'express';
-// import rateLimit from 'express-rate-limit';
-// import cors from 'cors';
+import rateLimit from 'express-rate-limit';
+import cors from 'cors';
 import colors from 'colors';
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloGateway } from '@apollo/gateway';
+import * as user from './server/user';
 
 const initGateway = async (): Promise<void> => {
   const PORT = process.env.PORT || 5000;
   const app = express();
 
-  // app.set('trust proxy', 1);
-  // app.use(
-  //   rateLimit({
-  //     windowMs: 1 * 60 * 1000,
-  //     max: 100
-  //   })
-  // );
-  // app.use(
-  //   cors({
-  //     credentials: true,
-  //     origin:
-  //       process.env.NODE_ENV === 'production'
-  //         ? 'prod url'
-  //         : 'http://localhost:3000'
-  //   })
-  // );
+  app.set('trust proxy', 1);
+  app.use(
+    rateLimit({
+      windowMs: 1 * 60 * 1000,
+      max: 100
+    })
+  );
+  app.use(
+    cors({
+      credentials: true,
+      origin:
+        process.env.NODE_ENV === 'production'
+          ? 'prod url'
+          : 'http://localhost:3000'
+    })
+  );
 
-  const createGateway = () =>
-    new Promise(resolve => {
-      const gateway = new ApolloGateway({
-        serviceList: [{ name: 'user', url: 'http://localhost:5001/graphql' }]
-      });
-
-      setTimeout(() => resolve(gateway), 5000);
-    });
+  const gateway = new ApolloGateway({
+    serviceList: [{ name: 'user', url: await user.startService(5001) }]
+  });
 
   const apolloServer = new ApolloServer({
-    gateway: (await createGateway()) as ApolloGateway,
+    gateway,
     subscriptions: false,
     playground: true
   });
@@ -50,7 +46,9 @@ const initGateway = async (): Promise<void> => {
 
   app.listen({ port: PORT }, (): void => {
     console.log(
-      `\n🚀  Gateway is now running on http://localhost:${PORT}/graphql`
+      colors.cyan(
+        `\n🚀  Gateway is now running on http://localhost:${PORT}/graphql`
+      )
     );
   });
 };
