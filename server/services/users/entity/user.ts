@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
   BaseEntity
 } from 'typeorm';
-import { hash, genSaltSync } from 'bcryptjs';
+import { hash } from 'argon2';
 
 @ObjectType()
 @Entity('users')
@@ -42,8 +42,7 @@ class User extends BaseEntity {
 
   @BeforeInsert()
   async hashPassword() {
-    const salt = genSaltSync(10);
-    this.password = await hash(this.password, salt);
+    this.password = await hash(this.password);
   }
 }
 

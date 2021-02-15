@@ -5,7 +5,7 @@ import cors from 'cors';
 import colors from 'colors';
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloGateway } from '@apollo/gateway';
-import * as user from './server/user';
+import { users } from './server/services';
 
 const initGateway = async (): Promise<void> => {
   const PORT = process.env.PORT || 5000;
@@ -29,7 +29,7 @@ const initGateway = async (): Promise<void> => {
   );
 
   const gateway = new ApolloGateway({
-    serviceList: [{ name: 'user', url: await user.startService(5001) }]
+    serviceList: [{ name: 'user', url: await users.startService(5001) }]
   });
 
   const apolloServer = new ApolloServer({

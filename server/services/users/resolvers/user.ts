@@ -6,10 +6,13 @@ import {
   Query,
   Mutation,
   InputType,
-  Field
+  Field,
+  Int,
+  UseMiddleware
 } from 'type-graphql';
-import { Context } from '../../types';
-import { compareSync } from 'bcryptjs';
+import { Context } from '../../../types';
+import { verify } from 'argon2';
+import { isAuth } from '../../../middleware/isAuth';
 
 @InputType()
 class RegisterUserInput {
@@ -48,7 +51,7 @@ class UserResolver {
       const user = await User.findOne(query);
 
       if (user) {
-        const passwordsMatch = compareSync(password, user.password);
+        const passwordsMatch = await verify(user.password, password);
 
         if (!passwordsMatch) throw new Error('Wrong password');
         req.session.userId = user.id;
@@ -81,6 +84,16 @@ class UserResolver {
         return resolve(true);
       })
     );
+  }
+
+  @Query(() => User)
+  @UseMiddleware(isAuth)
+  async findById(@Arg('id', () => Int) id: number): Promise<User | undefined> {
+    try {
+      return await User.findOneOrFail({ id });
+    } catch (err) {
+      throw err;
+    }
   }
 }
 

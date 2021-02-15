@@ -6,7 +6,7 @@ import connectRedis from 'connect-redis';
 import path from 'path';
 import User from './entity/user';
 import { ApolloServer } from 'apollo-server-express';
-import { buildFederationSchema } from './helpers';
+import { buildFederationSchema } from '../../helpers';
 import { createConnection } from 'typeorm';
 import { UserResolver } from './resolvers';
 
